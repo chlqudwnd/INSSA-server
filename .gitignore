@@ -1,0 +1,14 @@
+# nodejs
+node_modules/
+
+# IDE
+.idea/
+.code/
+.vscode/
+
+# build output
+dist/
+
+# test output
+.nyc_output/
+coverage/
