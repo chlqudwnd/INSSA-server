@@ -2,7 +2,7 @@
   "name": "boilerplate-typescript",
   "version": "0.0.1",
   "main": "index.js",
-  "repository": "git@git.hodoo.ai:jeewangue/boilerplate-typescript.git",
+  "repository": "git@github.com:codestates/INSSA-server.git",
   "license": "UNLICENSED",
   "scripts": {
     "lint": "eslint 'src/**/*.{ts,tsx}'",
