@@ -15,8 +15,13 @@ server.listen(PORT, () => {
   console.log(`app listen on ${PORT}`);
 });
 
-data.getConnection().then(async connection => {
-  console.log(`user: ${await connection.getRepository('User').count()}`);
-});
+data
+  .getConnection()
+  .then(async connection => {
+    console.log(`user: ${await connection.getRepository('User').count()}`);
+  })
+  .catch(err => {
+    console.error(err);
+  });
 
 export default server;
