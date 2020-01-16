@@ -3,8 +3,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 
 import basicRouter from './route/basicRouter';
-import userRouter from './route/user';
-import clubRouter from './route/club';
+import userRouter from './route/user/user';
+import clubRouter from './route/club/club';
 
 const app = express();
 
