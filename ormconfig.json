@@ -1,10 +1,10 @@
 {
-   "type": "mysql2",
+   "type": "mysql",
    "host": "localhost",
    "port": 3306,
-   "username": "test",
-   "password": "test",
-   "database": "test",
+   "username": "codestates",
+   "password": "code1234",
+   "database": "inssa",
    "synchronize": true,
    "logging": false,
    "entities": [

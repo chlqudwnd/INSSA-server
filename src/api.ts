@@ -4,10 +4,10 @@ import bodyParser from 'body-parser';
 
 import basicRouter from './route/basicRouter';
 
-const app = express();
+const api = express();
 
-app.use(cors());
-app.use(bodyParser());
-app.use('/someurl', basicRouter);
+api.use(cors());
+api.use(bodyParser());
+api.use('/api', basicRouter);
 
-export default app;
+export default api;
