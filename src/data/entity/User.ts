@@ -1,6 +1,17 @@
-import { BaseEntity, Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { Club } from './Club';
 import { Comment } from './Comment';
+import { Hobby } from './Hobby';
 @Entity()
 export class User extends BaseEntity {
   @PrimaryColumn()
@@ -59,4 +70,11 @@ export class User extends BaseEntity {
     comment => comment.user,
   )
   comments: Comment[];
+
+  @ManyToMany(
+    type => Hobby,
+    hobby => hobby.id,
+  )
+  @JoinTable()
+  hobbys: Hobby[];
 }

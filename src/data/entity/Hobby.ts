@@ -1,5 +1,6 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from 'typeorm';
 import { Club } from './Club';
+import { User } from './User';
 
 @Entity()
 export class Hobby extends BaseEntity {
@@ -17,4 +18,10 @@ export class Hobby extends BaseEntity {
     club => club.hobby,
   )
   clubs: Club[];
+
+  @ManyToMany(
+    type => User,
+    user => user.id,
+  )
+  users: User[];
 }
