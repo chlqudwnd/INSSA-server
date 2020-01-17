@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
+import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Club } from './Club';
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryColumn()
+  id: string;
 
   @Column({
     nullable: false,
@@ -29,11 +29,6 @@ export class User {
   @Column({
     nullable: false,
   })
-  hobbyNum: number;
-
-  @Column({
-    nullable: false,
-  })
   gender: string;
 
   @Column({
@@ -42,7 +37,19 @@ export class User {
   birth: Date;
 
   @Column({
-    nullable: false,
+    nullable: true,
   })
   type: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @OneToMany(
+    type => Club,
+    club => club.user,
+  )
+  clubs: Club[];
 }
