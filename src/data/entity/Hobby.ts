@@ -7,10 +7,7 @@ export class Hobby extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({
-    nullable: false,
-    unique: true,
-  })
+  @Column({ nullable: false, unique: true })
   name: string;
 
   @OneToMany(

@@ -29,19 +29,13 @@ export class Board extends BaseEntity {
   )
   user: User;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({ nullable: false })
   title: string;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({ nullable: false })
   category: string;
 
-  @Column({
-    nullable: true,
-  })
+  @Column({ nullable: true })
   text: string;
 
   @CreateDateColumn()

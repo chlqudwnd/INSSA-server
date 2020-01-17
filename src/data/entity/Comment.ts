@@ -27,9 +27,7 @@ export class Comment extends BaseEntity {
   )
   board: Board;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({ nullable: false })
   text: string;
 
   @CreateDateColumn()

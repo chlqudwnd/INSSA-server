@@ -14,10 +14,7 @@ export class Session extends BaseEntity {
   @OneToOne(
     type => User,
     user => user.id,
-    {
-      cascade: true,
-      nullable: false,
-    },
+    { cascade: true, nullable: false },
   )
   @JoinColumn()
   user: User;

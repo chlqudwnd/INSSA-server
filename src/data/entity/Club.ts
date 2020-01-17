@@ -7,6 +7,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import { User } from './User';
 import { Hobby } from './Hobby';
@@ -19,30 +21,25 @@ export class Club extends BaseEntity {
 
   @ManyToOne(
     type => User,
-    user => user.clubs,
+    user => user.ownedClubs,
+    { nullable: false },
   )
-  user: User;
+  host: User;
 
   @ManyToOne(
     type => Hobby,
     hobby => hobby.clubs,
+    { nullable: false },
   )
   hobby: Hobby;
 
-  @Column({
-    nullable: false,
-    unique: true,
-  })
+  @Column({ nullable: false, unique: true })
   name: string;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({ nullable: false })
   max: number;
 
-  @Column({
-    nullable: true,
-  })
+  @Column({ nullable: true })
   field: string;
 
   @Column({
@@ -61,4 +58,11 @@ export class Club extends BaseEntity {
     board => board.club,
   )
   boards: Board[];
+
+  @ManyToMany(
+    type => User,
+    user => user.clubs,
+  )
+  @JoinTable()
+  users: User[];
 }
