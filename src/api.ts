@@ -6,13 +6,13 @@ import basicRouter from './route/basicRouter';
 import userRouter from './route/user/user';
 import clubRouter from './route/club/club';
 
-const app = express();
+const api = express();
 
-app.use(cors());
-app.use(bodyParser());
-app.use('/someurl', basicRouter);
+api.use(cors());
+api.use(bodyParser());
+api.use('/api', basicRouter);
 
-app.use('/user', userRouter);
-app.use('/club', clubRouter);
+api.use('/user', userRouter);
+api.use('/club', clubRouter);
 
-export default app;
+export default api;

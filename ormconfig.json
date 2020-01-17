@@ -1,0 +1,24 @@
+{
+   "type": "mysql",
+   "host": "localhost",
+   "port": 3306,
+   "username": "codestates",
+   "password": "code1234",
+   "database": "inssa",
+   "synchronize": true,
+   "logging": false,
+   "entities": [
+      "src/data/entity/**/*.ts"
+   ],
+   "migrations": [
+      "src/data/migration/**/*.ts"
+   ],
+   "subscribers": [
+      "src/data/subscriber/**/*.ts"
+   ],
+   "cli": {
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+   }
+}
