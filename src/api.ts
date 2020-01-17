@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 
 import basicRouter from './route/basicRouter';
 import userRouter from './route/users';
-import clubRouter from './route/club';
+import clubRouter from './route/clubs';
 
 const api = express();
 
