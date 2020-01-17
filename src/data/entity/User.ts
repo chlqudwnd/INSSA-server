@@ -1,8 +1,8 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { BaseEntity, Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Club } from './Club';
 import { Comment } from './Comment';
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @PrimaryColumn()
   id: string;
 

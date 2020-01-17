@@ -1,7 +1,7 @@
-import { Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm';
+import { BaseEntity, Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm';
 import { User } from './User';
 @Entity()
-export class Session {
+export class Session extends BaseEntity {
   @PrimaryColumn()
   id: string;
 
