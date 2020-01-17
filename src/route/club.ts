@@ -1,5 +1,5 @@
 import express from 'express';
-import replyRouter from './reply/reply';
+import replyRouter from './club/reply/reply';
 
 const router = express.Router();
 
