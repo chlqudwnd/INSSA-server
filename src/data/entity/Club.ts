@@ -1,11 +1,32 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { User } from './User';
-import { Category } from './Category';
+import { Hobby } from './Hobby';
+import { Board } from './Board';
 
 @Entity()
 export class Club {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @ManyToOne(
+    type => User,
+    user => user.clubs,
+  )
+  user: User;
+
+  @ManyToOne(
+    type => Hobby,
+    hobby => hobby.clubs,
+  )
+  hobby: Hobby;
 
   @Column({
     nullable: false,
@@ -16,30 +37,27 @@ export class Club {
   @Column({
     nullable: false,
   })
-  phone: string;
+  max: number;
+
+  @Column({
+    nullable: true,
+  })
+  field: string;
 
   @Column({
     nullable: false,
   })
-  address: string;
+  status: string;
 
-  @Column({
-    nullable: false,
-  })
-  hobbyNum: number;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @Column({
-    nullable: false,
-  })
-  gender: string;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-  @Column({
-    nullable: false,
-  })
-  birth: Date;
-
-  @Column({
-    nullable: false,
-  })
-  type: string;
+  @OneToMany(
+    type => Board,
+    board => board.club,
+  )
+  boards: Board[];
 }

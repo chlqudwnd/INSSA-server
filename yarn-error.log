@@ -37,7 +37,8 @@ npm manifest:
       "lint": "eslint 'src/**/*.{ts,tsx}'",
       "build": "rm -rf dist && tsc",
       "start": "yarn build && node dist/index.js",
-      "dev": "ts-node src/index.ts"
+      "dev": "ts-node src/index.ts",
+      "typeorm": "ts-node ./node_modules/typeorm/cli.js"
     },
     "lint-staged": {
       "src/**/*.{ts,tsx}": [
