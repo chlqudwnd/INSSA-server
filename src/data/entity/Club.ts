@@ -1,45 +1,68 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  JoinTable,
+  ManyToMany,
+} from 'typeorm';
 import { User } from './User';
-import { Category } from './Category';
+import { Hobby } from './Hobby';
+import { Board } from './Board';
 
 @Entity()
-export class Club {
+export class Club extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({
-    nullable: false,
-    unique: true,
-  })
+  @ManyToOne(
+    type => User,
+    user => user.ownedClubs,
+    { nullable: false },
+  )
+  host: User;
+
+  @ManyToOne(
+    type => Hobby,
+    hobby => hobby.clubs,
+    { nullable: false },
+  )
+  hobby: Hobby;
+
+  @Column({ nullable: false, unique: true })
   name: string;
 
-  @Column({
-    nullable: false,
-  })
-  phone: string;
+  @Column({ nullable: false })
+  max: number;
+
+  @Column({ nullable: true })
+  field: string;
 
   @Column({
     nullable: false,
   })
-  address: string;
+  status: string;
 
-  @Column({
-    nullable: false,
-  })
-  hobbyNum: number;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @Column({
-    nullable: false,
-  })
-  gender: string;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-  @Column({
-    nullable: false,
-  })
-  birth: Date;
+  @OneToMany(
+    type => Board,
+    board => board.club,
+  )
+  boards: Board[];
 
-  @Column({
-    nullable: false,
-  })
-  type: string;
+  @ManyToMany(
+    type => User,
+    user => user.clubs,
+  )
+  @JoinTable()
+  users: User[];
 }

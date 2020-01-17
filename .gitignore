@@ -12,4 +12,5 @@ dist/
 # test output
 .nyc_output/
 coverage/
-yarn-error.log/
+
+yarn-error.log
