@@ -6,6 +6,6 @@ router.post('/add');
 
 router.post('/edit');
 
-router.get('delete');
+router.get('/delete');
 
 export default router;
