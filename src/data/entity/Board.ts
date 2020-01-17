@@ -1,6 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { User } from './User';
 import { Club } from './Club';
+import { Comment } from './Comment';
 
 @Entity()
 export class Board {
@@ -39,4 +48,10 @@ export class Board {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(
+    type => Comment,
+    comment => comment.board,
+  )
+  comments: Comment[];
 }

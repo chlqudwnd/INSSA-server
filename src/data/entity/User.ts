@@ -1,5 +1,6 @@
 import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Club } from './Club';
+import { Comment } from './Comment';
 @Entity()
 export class User {
   @PrimaryColumn()
@@ -52,4 +53,10 @@ export class User {
     club => club.user,
   )
   clubs: Club[];
+
+  @OneToMany(
+    type => Comment,
+    comment => comment.user,
+  )
+  comments: Comment[];
 }
