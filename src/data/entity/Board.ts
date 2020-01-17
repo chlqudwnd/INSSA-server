@@ -1,9 +1,19 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { User } from './User';
 import { Club } from './Club';
+import { Comment } from './Comment';
 
 @Entity()
-export class Board {
+export class Board extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,19 +29,13 @@ export class Board {
   )
   user: User;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({ nullable: false })
   title: string;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({ nullable: false })
   category: string;
 
-  @Column({
-    nullable: true,
-  })
+  @Column({ nullable: true })
   text: string;
 
   @CreateDateColumn()
@@ -39,4 +43,10 @@ export class Board {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(
+    type => Comment,
+    comment => comment.board,
+  )
+  comments: Comment[];
 }

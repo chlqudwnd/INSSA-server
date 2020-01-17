@@ -1,44 +1,41 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { Club } from './Club';
+import { Comment } from './Comment';
+import { Hobby } from './Hobby';
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @PrimaryColumn()
   id: string;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({ nullable: false })
   name: string;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({ nullable: false })
   password: string;
 
-  @Column({
-    nullable: false,
-    unique: true,
-  })
+  @Column({ nullable: false, unique: true })
   phone: string;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({ nullable: false })
   address: string;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({ nullable: false })
   gender: string;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({ nullable: false })
   birth: Date;
 
-  @Column({
-    nullable: true,
-  })
+  @Column({ nullable: true })
   type: string;
 
   @CreateDateColumn()
@@ -49,7 +46,26 @@ export class User {
 
   @OneToMany(
     type => Club,
-    club => club.user,
+    club => club.host,
+  )
+  ownedClubs: Club[];
+
+  @OneToMany(
+    type => Comment,
+    comment => comment.user,
+  )
+  comments: Comment[];
+
+  @ManyToMany(
+    type => Hobby,
+    hobby => hobby.id,
+  )
+  @JoinTable()
+  hobbys: Hobby[];
+
+  @ManyToMany(
+    type => Club,
+    club => club.id,
   )
   clubs: Club[];
 }
