@@ -24,8 +24,14 @@
     }
   },
   "dependencies": {
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express-session": "^1.15.16",
+    "@types/jsonwebtoken": "^8.3.6",
+    "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.1.0",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^2.3.0",
