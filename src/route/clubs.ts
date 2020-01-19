@@ -1,44 +1,42 @@
 import express from 'express';
+import { Club } from '../data/entity/Club';
+import { Hobby } from '../data/entity/Hobby';
+import { User } from '../data/entity/User';
+import jwt from 'jsonwebtoken';
+import secret from '../config/jwt';
 
 const router = express.Router();
 
 // //동호회 메인 페이지 get 요청
-// router.get('/', (req,res)=>{
+router.get('/', async (req, res) => {
+  const clubs = await Club.find();
+  res.send(clubs);
+});
 
-// });
-
-// // 동호회 생성 post 요청
-// router.post('/', (req,res)=>{
-//   const userId = req.session.userid
-//   const { hobbyId, name, max , field} = req.body
-//   club.findAll({
-//     where:{
-//       userid: userId
-//     }
-//   })
-//   .then(result=>{
-//     if(result.lnegth > 5){
-//       res.status(409).send("5개 초과 안됨")
-//     } else {
-//       club.create({
-//         id: 0,
-//         hobbyId: hobbyId,
-//         userId: userId,
-//         name: name,
-//         max: max,
-//         field: field,
-//         createdAt: new Date.now(),
-//         updatedAt: new Date.now()
-//       })
-//       .then((result)=>{
-//         res.status(200).send(result)
-//       })
-//       .catch(err=>{
-//         console.log(err)
-//       })
-//     }
-//   })
-// });
+// 동호회 생성 post 요청
+router.post('/', async (req, res) => {
+  const { hobbyId, name, max, field } = req.body;
+  const token = req.cookies.token;
+  const userId = Object.values(jwt.verify(token, secret))[0];
+  const host = await User.findOne({ where: { id: userId }, select: ['id'] });
+  const hobby = await Hobby.findOne({ where: { id: hobbyId } });
+  console.log(host);
+  Club.create({
+    name: name,
+    max: max,
+    field: field,
+    status: 'ok',
+    host: host,
+    hobby: hobby,
+  })
+    .save()
+    .then((result: any) => {
+      res.status(200).send(result);
+    })
+    .catch((err: Error) => {
+      res.send('중복된 동호회 이름입니다');
+    });
+});
 
 // //동호회 폐쇠 delete 요청
 // router.delete('/', (req, res)=>{
