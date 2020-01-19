@@ -72,7 +72,7 @@ router.patch('/', async (req, res) => {
     res.send('중복된 동호회 이름입니다');
     return;
   }
-  await Club.update({ id: clubId }, { name: name, max: max, field: field, hobby: hobby });
+  Club.update({ id: clubId }, { id: clubId, name: name, max: max, field: field, hobby: hobby });
   res.send('수정 완료!');
 });
 
