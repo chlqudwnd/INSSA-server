@@ -8,7 +8,7 @@ const router = express.Router();
 // 로그인 요청을 보낸 사용자 처리
 router.post('/', async (req, res) => {
   const { id, password } = req.body;
-  const token = jwt.sign({ id: id }, secret, { expiresIn: '60m' });
+  const token = jwt.sign({ id: id }, secret, { expiresIn: '1w' });
   Session.delete({ user: id });
   User.findOne({
     where: {
@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
       if (user) {
         res.cookie('token', token, {
           httpOnly: true,
-          expires: new Date(Date.now() + 900000),
+          expires: new Date(Date.now() + 9000000),
         });
         Session.create({ id: token, user: user }).save();
         res.status(200).send('로그인 완료');
@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
     });
 });
 // 로그아웃 요청을 보낸 사용자 처리
-router.get('/', (req, res) => {
+router.delete('/', (req, res) => {
   const token = req.cookies.token;
   console.log(token);
   res.clearCookie('token');
@@ -43,7 +43,7 @@ router.get('/', (req, res) => {
   })
     .then((result: any) => {
       console.log('result', result);
-      res.status(200).send('ok');
+      res.status(200).send('bye bye');
     })
     .catch((err: any) => {
       res.status(401).json(err);
