@@ -16,9 +16,16 @@ api.use(cors());
 api.use(bodyParser.urlencoded({ extended: false }));
 api.use(bodyParser.json());
 api.use(cookieparser());
-api.get('/', (req, res) => {
-  console.log(req.sessionID);
-  res.send('hello');
+api.get('*', (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    res
+      .status(401)
+      .send('잘못된 접근입니다 다시 로그인 해주세요')
+      .redirect('/');
+  } else {
+    next();
+  }
 });
 api.use('/api', basicRouter);
 
