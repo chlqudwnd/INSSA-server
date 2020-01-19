@@ -76,11 +76,11 @@ data
 
     const testComment = await commentRepository.save(comment);
 
-    console.log(testUser);
-    console.log(testHobby);
-    console.log(testClub);
-    console.log(testBoard);
-    console.log(testComment);
+    // console.log(testUser);
+    // console.log(testHobby);
+    // console.log(testClub);
+    // console.log(testBoard);
+    // console.log(testComment);
 
     const asd = await userRepository.findOne('test@test.com', { relations: ['comments'] });
     console.log(asd);
