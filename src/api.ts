@@ -19,16 +19,13 @@ api.use(cookieparser());
 api.get('*', (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
-    res
-      .status(401)
-      .send('잘못된 접근입니다 다시 로그인 해주세요')
-      .redirect('/');
+    res.status(401).send('잘못된 접근입니다 다시 로그인 해주세요');
   } else {
     next();
   }
 });
 api.use('/api', basicRouter);
-
+api.use('/clubs/:', clubRouter);
 api.use('/users', userRouter);
 api.use('/clubs', clubRouter);
 api.use('/boards', boardRouter);
