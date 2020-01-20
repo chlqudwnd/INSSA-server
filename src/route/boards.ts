@@ -4,6 +4,7 @@ import { Club } from '../data/entity/Club';
 import { User } from '../data/entity/User';
 import jwt from 'jsonwebtoken';
 import secret from '../config/jwt';
+import { Comment } from '../data/entity/Comment';
 
 const router = express.Router();
 
@@ -22,10 +23,11 @@ router.use('*', (req, res, next) => {
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const club = await Club.findOne({ id: Number(id) });
-  const board = await Board.find({ club: club });
-  console.log(board);
-  if (board.length) {
-    res.status(200).send(board);
+  const board = await Board.findOne({ club: club });
+  const comments = await Comment.find({ board: board });
+  const resData = { board: board, comments: comments };
+  if (board) {
+    res.status(200).send(resData);
   } else {
     res.status(404).send('not found');
   }
@@ -40,12 +42,14 @@ router.post('/:id', async (req, res) => {
   const userId = Object.values(jwt.verify(token, secret))[0];
   const user = await User.find({ id: userId });
   const club = await Club.find({ where: { id: id } });
+  const comment = await Comment.find({ id: Number(id) });
   const newBoard = new Board();
   newBoard.title = title;
   newBoard.category = category;
   newBoard.text = text;
   newBoard.club = club[0];
   newBoard.user = user[0];
+  newBoard.comments = comment;
   const result = await Board.save(newBoard);
   console.log(result);
   res.send('저장 완료');
