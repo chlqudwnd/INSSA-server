@@ -5,6 +5,7 @@ import { User } from '../data/entity/User';
 import jwt from 'jsonwebtoken';
 import secret from '../config/jwt';
 import { LessThan } from 'typeorm';
+import { decryptId } from '../config/decryptId';
 
 const router = express.Router();
 
@@ -20,26 +21,33 @@ router.use('*', (req, res, next) => {
 
 // //동호회 메인 페이지 get 요청
 router.get('/', async (req, res) => {
-  const clubs = await Club.find({ relations: ['host', 'hobby'] });
-  console.log(clubs);
-  const resData = clubs.map(item => {
-    const { id, name, host, hobby } = item;
-    return {
-      id,
-      name,
-      hobbyName: hobby.name,
-      hostName: host.name,
-    };
-  });
-  res.send(resData);
+  const userId = await decryptId(req);
+  const user = await User.findOne({ where: { id: userId }, relations: ['hobbys'] });
+  const club = await Club.find({ relations: ['host', 'hobby'] });
+  if (user) {
+    const clubs = user.hobbys.map(item => {
+      return club.filter(club => item.name === club.hobby.name);
+    });
+    const resData =
+      club &&
+      clubs.map(item => {
+        const { id, name, host, hobby } = item[0];
+        return {
+          id,
+          name,
+          hobbyName: hobby.name,
+          hostName: host.name,
+        };
+      });
+    res.send(resData);
+  }
 });
 
 // 동호회 생성 post 요청
 router.post('/', async (req, res) => {
   const { name, field, status, max, hobbyId } = req.body;
-  const token = req.cookies.token;
-  const decryptId = Object.values(jwt.verify(token, secret))[0];
-  const host = await User.find({ where: { id: decryptId } });
+  const userId = await decryptId(req);
+  const host = await User.find({ where: { id: userId } });
   const findHobby = await Hobby.find({ where: { id: hobbyId } });
   const checkClubName = await Club.findOne({ where: { name: name } });
   console.log('clubname', checkClubName);
@@ -55,16 +63,15 @@ router.post('/', async (req, res) => {
   newClub.host = host[0];
   newClub.hobby = findHobby[0];
   newClub.users = [host[0]];
-  Club.save(newClub);
-  res.status(201).send(newClub);
+  const result = await Club.save(newClub);
+  res.status(201).send(result);
 });
 
 // //동호회 폐쇠 delete 요청
 router.delete('/', async (req, res) => {
   const { clubId } = req.body;
-  const token = req.cookies.token;
-  const decryptId = Object.values(jwt.verify(token, secret))[0];
-  const result = await Club.delete({ id: clubId, host: decryptId });
+  const userId = await decryptId(req);
+  const result = await Club.delete({ id: clubId, host: userId });
   if (result.affected === 1) {
     res.status(200).send('삭제 완료');
   } else {
@@ -86,11 +93,49 @@ router.patch('/', async (req, res) => {
   res.send('수정 완료!');
 });
 
-// //
-// router.get('/page/:id');
+//동호회 가입 요청
 
-// router.get('/join');
+router.get('/join', async (req, res) => {
+  const { clubId } = req.body;
+  const userId = await decryptId(req);
+  const user = await User.findOne({ id: userId });
+  const club = await Club.findOne({ where: { id: clubId }, relations: ['users'] });
+  if (user && club) {
+    club.users.map(item => {
+      if (user.id === item.id) {
+        res.status(400).send('이미 가입 되어 있습니다!');
+        return;
+      }
+    });
+    club.users.push(user);
+    Club.save(club);
+    res.status(200).send('가입 완료!');
+  } else {
+    res.status(401).send('잘못된 요청 입니다');
+  }
+});
 
-// router.delete('/drop');
+//동호회 탈퇴 요청
+
+router.delete('/out', async (req, res) => {
+  const { clubId } = req.body;
+  const userId = await decryptId(req);
+  const user = await User.findOne({ id: userId });
+  const club = await Club.findOne({ where: { id: clubId }, relations: ['users'] });
+  if (user && club) {
+    club.users.map((item, index) => {
+      const num = index ? index : 1;
+      if (user.id === item.id) {
+        club.users.splice(index, num);
+        Club.save(club);
+        res.status(400).send('탈퇴 완료!');
+        return;
+      }
+    });
+    res.status(200).send('가입되어 있지 않습니다!');
+  } else {
+    res.status(401).send('잘못된 요청 입니다');
+  }
+});
 
 export default router;
