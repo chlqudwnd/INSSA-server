@@ -8,6 +8,16 @@ import { LessThan } from 'typeorm';
 
 const router = express.Router();
 
+router.use('*', (req, res, next) => {
+  // 토큰 만료 경우 로그인 요청
+  const token = req.cookies.token;
+  if (token) {
+    next();
+  } else {
+    res.status(400).send('토큰 만료 다시 로그인 해주세요');
+  }
+});
+
 // //동호회 메인 페이지 get 요청
 router.get('/', async (req, res) => {
   const clubs = await Club.find({ relations: ['host', 'hobby'] });
