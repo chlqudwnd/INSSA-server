@@ -3,7 +3,7 @@ import { User } from '../data/entity/User';
 import { Session } from '../data/entity/Session';
 import jwt from 'jsonwebtoken';
 import secret from '../config/jwt';
-import { encrypt } from '../config/encrypt';
+import { encrypt } from '../config/encryptId';
 const router = express.Router();
 
 //현재 접속중인 사용자 요청

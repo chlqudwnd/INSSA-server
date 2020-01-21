@@ -1,11 +1,11 @@
 import express from 'express';
 import { User } from '../data/entity/User';
 import { decryptId } from '../config/decryptId';
-import { encrypt } from '../config/encrypt';
+import { encrypt } from '../config/encryptId';
 import { Hobby } from '../data/entity/Hobby';
 const router = express.Router();
 
-router.get('*', (req, res, next) => {
+router.use((req, res, next) => {
   const token = req.cookies.token;
   if (token) {
     next();
@@ -16,7 +16,7 @@ router.get('*', (req, res, next) => {
 
 // signup
 router.post('/', async (req, res) => {
-  const { id, password, name, phone, address, gender, birth, type, hobbys } = req.body;
+  const { id, password, name, phone, address, gender, birth, type, hobbies } = req.body;
   const finduser = await User.findOne({ id: id });
   if (finduser) {
     res.status(409).send('아이디 중복');
@@ -33,11 +33,11 @@ router.post('/', async (req, res) => {
   newUser.birth = birth;
   newUser.type = 'true';
   await User.save(newUser);
-  const user = await User.findOne({ where: { id: id }, relations: ['hobbys'] });
-  hobbys.map(async (id: number) => {
+  const user = await User.findOne({ where: { id: id }, relations: ['hobbies'] });
+  hobbies.map(async (id: number) => {
     const info = await Hobby.findOne({ id: id });
     if (user && info) {
-      user.hobbys.push(info);
+      user.hobbies.push(info);
       User.save(user);
     }
   });
