@@ -8,7 +8,7 @@ import { Comment } from '../data/entity/Comment';
 
 const router = express.Router();
 
-router.use('*', (req, res, next) => {
+router.use((req, res, next) => {
   // 토큰 만료 경우 로그인 요청
   const token = req.cookies.token;
   if (token) {

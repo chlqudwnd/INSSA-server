@@ -9,7 +9,7 @@ import { decryptId } from '../config/decryptId';
 
 const router = express.Router();
 
-router.use('*', (req, res, next) => {
+router.use((req, res, next) => {
   // 토큰 만료 경우 로그인 요청
   const token = req.cookies.token;
   if (token) {
@@ -22,10 +22,10 @@ router.use('*', (req, res, next) => {
 // //동호회 메인 페이지 get 요청
 router.get('/', async (req, res) => {
   const userId = await decryptId(req);
-  const user = await User.findOne({ where: { id: userId }, relations: ['hobbys'] });
+  const user = await User.findOne({ where: { id: userId }, relations: ['hobbies'] });
   const club = await Club.find({ relations: ['host', 'hobby'] });
   if (user) {
-    const clubs = user.hobbys.map(item => {
+    const clubs = user.hobbies.map(item => {
       return club.filter(club => item.name === club.hobby.name);
     });
     const resData =
@@ -95,7 +95,7 @@ router.patch('/', async (req, res) => {
 
 //동호회 가입 요청
 
-router.get('/join', async (req, res) => {
+router.post('/join', async (req, res) => {
   const { clubId } = req.body;
   const userId = await decryptId(req);
   const user = await User.findOne({ id: userId });

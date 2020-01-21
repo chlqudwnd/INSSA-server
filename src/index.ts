@@ -44,7 +44,7 @@ data
     user.password = '1234';
     user.type = 'test type';
     user.phone = '023-4567-6788';
-    user.hobbys = [testHobby];
+    user.hobbies = [testHobby];
 
     const testUser = await userRepository.save(user);
     console.log(`user: ${await userRepository.count()}`);

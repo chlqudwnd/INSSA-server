@@ -8,9 +8,9 @@ const router = express.Router();
 
 //취미 가져오기 요청
 router.get('/', async (req, res) => {
-  const hobbys = await Hobby.find();
-  if (hobbys.length) {
-    res.status(200).send(hobbys);
+  const hobbies = await Hobby.find();
+  if (hobbies.length) {
+    res.status(200).send(hobbies);
   } else {
     res.status(404).send('not found');
   }
