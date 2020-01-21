@@ -61,7 +61,7 @@ export class User extends BaseEntity {
     hobby => hobby.id,
   )
   @JoinTable()
-  hobbys: Hobby[];
+  hobbies: Hobby[];
 
   @ManyToMany(
     type => Club,

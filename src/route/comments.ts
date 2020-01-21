@@ -5,7 +5,7 @@ import { User } from '../data/entity/User';
 import { decryptId } from '../config/decryptId';
 const router = express.Router();
 
-router.use('*', (req, res, next) => {
+router.use((req, res, next) => {
   // 토큰 만료 경우 로그인 요청
   const token = req.cookies.token;
   if (token) {
@@ -70,7 +70,6 @@ router.patch('/:id', async (req, res) => {
 // comment delete 요청
 
 router.delete('/:id', async (req, res) => {
-  const { commentId } = req.body;
   const { id } = req.params;
   const board = await Board.find({ id: Number(id) });
   if (!board.length) {
@@ -79,7 +78,7 @@ router.delete('/:id', async (req, res) => {
   }
   const userId = await decryptId(req);
   const user = await User.find({ id: userId });
-  const result = await Comment.delete({ id: commentId, user: user[0], board: board[0] });
+  const result = await Comment.delete({ id: Number(id), user: user[0], board: board[0] });
   if (result.affected) {
     res.status(201).send('삭제 완료');
   } else {

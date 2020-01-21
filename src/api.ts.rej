@@ -1,7 +1,0 @@
-diff a/src/api.ts b/src/api.ts	(rejected hunks)
-@@ -11 +11 @@ import boardRouter from './route/boards';
--import hobbysRouter from './route/hobbys'
-+import hobbysRouter from './route/hobbys';
-@@ -31 +31 @@ api.use('/sessions', sessionRouter);
--api.use('/hobbys', hobbysRouter)
-+api.use('/hobbys', hobbysRouter);
