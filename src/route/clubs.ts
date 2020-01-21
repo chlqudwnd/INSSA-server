@@ -2,8 +2,6 @@ import express from 'express';
 import { Club } from '../data/entity/Club';
 import { Hobby } from '../data/entity/Hobby';
 import { User } from '../data/entity/User';
-import jwt from 'jsonwebtoken';
-import secret from '../config/jwt';
 import { LessThan } from 'typeorm';
 import { decryptId } from '../config/decryptId';
 
@@ -39,7 +37,11 @@ router.get('/', async (req, res) => {
           hostName: host.name,
         };
       });
-    res.send(resData);
+    if (resData) {
+      res.status(200).send(resData);
+    } else {
+      res.status(404).send('not found');
+    }
   }
 });
 
@@ -95,10 +97,10 @@ router.patch('/', async (req, res) => {
 
 //동호회 가입 요청
 
-router.get('/join', async (req, res) => {
+router.post('/join', async (req, res) => {
   const { clubId } = req.body;
   const userId = await decryptId(req);
-  const user = await User.findOne({ id: userId });
+  const user = await User.findOne({ where: { id: userId }, relations: ['clubs'] });
   const club = await Club.findOne({ where: { id: clubId }, relations: ['users'] });
   if (user && club) {
     club.users.map(item => {

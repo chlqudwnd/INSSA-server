@@ -9,6 +9,7 @@ import sessionRouter from './route/sessions';
 import commentRouter from './route/comments';
 import boardRouter from './route/boards';
 import hobbysRouter from './route/hobbys';
+import mypageRouter from './route/mypage';
 
 const api = express();
 
@@ -33,6 +34,6 @@ api.use('/comments', commentRouter);
 api.use('/sessions', sessionRouter);
 // api.use('/meetings');
 api.use('/hobbys', hobbysRouter);
-// api.use('/mypage');
+api.use('/mypage', mypageRouter);
 
 export default api;
