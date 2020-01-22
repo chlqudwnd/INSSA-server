@@ -10,6 +10,7 @@ import commentRouter from './route/comments';
 import boardRouter from './route/boards';
 import mypageRouter from './route/mypage';
 import hobbiesRouter from './route/hobbies';
+import searchRouter from './route/searchClub';
 
 const api = express();
 
@@ -31,9 +32,8 @@ api.use('/users', userRouter);
 api.use('/boards', boardRouter);
 api.use('/comments', commentRouter);
 api.use('/sessions', sessionRouter);
-// api.use('/meetings');
 api.use('/mypage', mypageRouter);
 api.use('/hobbies', hobbiesRouter);
-// api.use('/mypage');
+api.use('/search', searchRouter);
 
 export default api;
