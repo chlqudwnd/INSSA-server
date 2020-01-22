@@ -1,8 +1,5 @@
 import express from 'express';
 import { Hobby } from '../data/entity/Hobby';
-import { User } from '../data/entity/User';
-import jwt from 'jsonwebtoken';
-import secret from '../config/jwt';
 
 const router = express.Router();
 
