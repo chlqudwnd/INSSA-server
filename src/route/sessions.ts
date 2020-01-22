@@ -9,9 +9,15 @@ const router = express.Router();
 //현재 접속중인 사용자 요청
 
 router.get('/', async (req, res) => {
-  const getOnlineUsers = await Session.find();
+  const getOnlineUsers = await Session.find({ relations: ['user'] });
   if (getOnlineUsers.length) {
-    res.status(200).send(getOnlineUsers);
+    const results = getOnlineUsers.map(item => {
+      const { user } = item;
+      return {
+        user: user.id,
+      };
+    });
+    res.status(200).send(results);
   } else {
     res.status(404).send('not found');
   }
