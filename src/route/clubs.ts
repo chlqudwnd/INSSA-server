@@ -21,6 +21,7 @@ router.use((req, res, next) => {
 router.get('/', async (req, res) => {
   const userId = await decryptId(req);
   const user = await User.findOne({ where: { id: userId }, relations: ['hobbies'] });
+  const allClubs = await Club.find();
   const club = await Club.find({ relations: ['host', 'hobby'] });
   if (user) {
     const clubs = user.hobbies.map(item => {
@@ -37,8 +38,8 @@ router.get('/', async (req, res) => {
           hostName: host.name,
         };
       });
-    if (resData) {
-      res.status(200).send(resData);
+    if (resData.length || allClubs.length) {
+      res.status(200).send({ hobbiesEqualClubs: resData, allClubs });
     } else {
       res.status(404).send('not found');
     }
